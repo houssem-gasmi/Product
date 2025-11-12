@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Products</h2>
+  <table class="table table-bordered text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>Reference</th>
+        <th>Name</th>
+        <th>Stock Qty</th>
+        <th>Unit Price</th>
+        <th>Ordered Qty</th>
+        <th>Total</th>
+        <th>Add</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of products; let i = index">
+        <td>{{p.reference}}</td>
+        <td>{{p.name}}</td>
+        <td>{{p.stockQte}}</td>
+        <td>{{p.unitPrice}}</td>
+        <td><input type="number" min="0" [(ngModel)]="qte[i]" class="form-control"></td>
+        <td>{{total[i]}}</td>
+        <td>
+          <button class="btn btn-primary"
+            (click)="addCommand(i)"
+            [hidden]="qte[i] > p.stockQte || qte[i] == 0">Add</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-success float-end" (click)="order()">Order</button>
+</div>

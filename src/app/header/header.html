@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg" [class.navbar-dark]="isDarkTheme" [class.bg-dark]="isDarkTheme" [class.navbar-light]="!isDarkTheme" [class.bg-light]="!isDarkTheme">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/products" routerLinkActive="active">Products</a>
+        </li>
+      </ul>
+      <a class="navbar-brand mx-auto">Rate Product</a>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <button class="btn nav-link d-flex align-items-center gap-2" (click)="toggleTheme()">
+            <i class="bi" [class.bi-moon-fill]="isDarkTheme" [class.bi-sun-fill]="!isDarkTheme"></i>
+            {{ isDarkTheme ? 'Light Mode' : 'Dark Mode' }}
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
