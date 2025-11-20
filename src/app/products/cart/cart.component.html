@@ -1,0 +1,23 @@
+<div class="card p-3">
+  <h5>Cart</h5>
+  <div *ngIf="cart.getItems().length === 0">No items in cart.</div>
+  <ul class="list-group mb-2">
+    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let it of cart.getItems()">
+      <div>
+        <div><strong>{{ it.name }}</strong></div>
+        <div class="small">{{ it.qty }} × {{ it.unitPrice }} DT</div>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-danger" (click)="cart.remove(it.productRef)">Remove</button>
+      </div>
+    </li>
+  </ul>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <strong>Total: {{ cart.total() }} DT</strong>
+    <div>
+      <button class="btn btn-secondary btn-sm me-2" (click)="cart.clear()">Clear</button>
+      <button class="btn btn-primary btn-sm" (click)="confirm()">Confirm</button>
+    </div>
+  </div>
+</div>

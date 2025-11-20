@@ -1,0 +1,54 @@
+<div class="card h-100">
+  <div>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'" type="button">Details</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" [class.active]="activeTab === 'comments'" (click)="activeTab = 'comments'" type="button">Comments ({{product.comments.length || 0}})</button>
+      </li>
+    </ul>
+    <div class="p-2">
+      <div *ngIf="activeTab === 'details'">
+        <a [href]="'/images/' + product.image" target="_blank" rel="noopener noreferrer">
+          <img [src]="'/images/' + product.image" class="card-img-top mb-2" alt="{{product.name}}" onerror="this.src='https://via.placeholder.com/600x300?text=No+Image'">
+        </a>
+        <div class="card-body p-0">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text mb-1"><strong>Reference:</strong> {{ product.reference }}</p>
+          <p class="card-text mb-1"><strong>Price:</strong> {{ product.unitPrice }} DT</p>
+          <p class="card-text mb-1"><strong>In stock:</strong> {{ product.stockQte }}</p>
+        </div>
+        <div class="card-footer bg-transparent p-0 mt-2">
+          <button class="btn btn-primary btn-sm" (click)="addToCart()" [disabled]="product.stockQte <= 0">Add to cart</button>
+        </div>
+      </div>
+
+  <div *ngIf="activeTab === 'comments'">
+          <div class="mb-2">
+          <div *ngIf="(product.comments.length || 0) === 0">No comments yet.</div>
+          <div *ngFor="let c of product.comments" class="mb-2">
+            <div><strong>{{ c.rating }}★</strong> <small class="text-muted">{{ c.date | date:'short' }}</small></div>
+            <div>{{ c.comment }}</div>
+            <hr>
+          </div>
+        </div>
+
+        <div class="border-top pt-2">
+          <h6>Add a comment</h6>
+          <div class="mb-2">
+            <label class="form-label">Rating</label>
+            <select class="form-select" [value]="commentRating" (change)="onRatingChange($event)">
+              <option *ngFor="let r of [5,4,3,2,1]" [value]="r">{{r}}</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Comment</label>
+            <textarea class="form-control" rows="3" [value]="commentText" (input)="onCommentInput($event)"></textarea>
+          </div>
+          <button class="btn btn-success btn-sm" (click)="addComment()" [disabled]="!commentText">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
