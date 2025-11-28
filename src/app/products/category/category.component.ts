@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../shared/product';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
@@ -10,24 +10,41 @@ import { ProductStoreService } from '../../services/product-store.service';
   standalone: true,
   imports: [CommonModule, ProductDetailComponent]
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit, OnChanges {
   @Input() name!: string;
+  @Input() searchTerm: string = '';
 
-  products!: Product[];
+  allProducts: Product[] = [];
+  products: Product[] = [];
 
   constructor(private store: ProductStoreService) {}
 
   ngOnInit(): void {
     // get products from persistent store and filter by category
-    this.products = this.store.getAll().filter((p: Product) => p.category === this.name);
+    this.allProducts = this.store.getAll().filter((p: Product) => p.category === this.name);
+    this.filterProducts();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchTerm']) {
+      this.filterProducts();
+    }
+  }
+
+  filterProducts() {
+    if (!this.allProducts) return;
+
+    if (!this.searchTerm) {
+      this.products = [...this.allProducts];
+    } else {
+      const term = this.searchTerm.toLowerCase();
+      this.products = this.allProducts.filter(p => 
+        p.name.toLowerCase().includes(term)
+      );
+    }
   }
 
   onAdd(product: Product) {
-    const success = this.store.decrement(product.reference, 1);
-    if (success) {
-      alert(`${product.name} added. Remaining stock: ${product.stockQte}`);
-    } else {
-      alert(`${product.name} is out of stock`);
-    }
+    // No stock decrement here; handled on order confirmation
   }
 }
