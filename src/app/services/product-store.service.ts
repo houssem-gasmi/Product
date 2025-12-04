@@ -4,6 +4,7 @@ import { PRODUCTS as DEFAULT_PRODUCTS } from '../shared/products';
 
 @Injectable({ providedIn: 'root' })
 export class ProductStoreService {
+  // LocalStorage key for product persistence
   private storageKey = 'app_products';
   private products: Product[] = [];
 
@@ -11,6 +12,7 @@ export class ProductStoreService {
     this.load();
   }
 
+  // Initialize store from LocalStorage or bundled defaults
   private load() {
     try {
       const raw = localStorage.getItem(this.storageKey);
@@ -25,18 +27,22 @@ export class ProductStoreService {
     }
   }
 
+  // Save current store state
   private persist() {
     localStorage.setItem(this.storageKey, JSON.stringify(this.products));
   }
 
+  // Return all products
   getAll(): Product[] {
     return this.products;
   }
 
+  // Find a product by reference
   find(reference: string): Product | undefined {
     return this.products.find(p => p.reference === reference);
   }
 
+  // Decrease stock quantity; returns false if insufficient stock
   decrement(reference: string, amount = 1): boolean {
     const p = this.find(reference);
     if (!p) return false;
@@ -48,7 +54,7 @@ export class ProductStoreService {
     return false;
   }
 
-  // allow other updates
+  // Upsert a product in the store
   updateProduct(product: Product) {
     const idx = this.products.findIndex(p => p.reference === product.reference);
     if (idx >= 0) {

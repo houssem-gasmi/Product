@@ -1,21 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
 import { Footer } from './footer/footer';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer],
+  imports: [Header, Footer, RouterOutlet],
   standalone: true,
-  template: `
-    <div class="d-flex flex-column min-vh-100">
-      <app-header />
-      <main class="flex-grow-1">
-        <router-outlet />
-      </main>
-      <app-footer />
-    </div>
-  `,
+  templateUrl: './app.html',
   styles: `
     :host {
       display: block;

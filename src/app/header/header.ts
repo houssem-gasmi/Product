@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, NgClass],
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
-  standalone: true
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive]
 })
 export class Header implements OnInit {
   title = 'Rate Product';

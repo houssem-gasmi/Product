@@ -10,6 +10,7 @@ export interface CartItem {
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
+  // LocalStorage key used to persist cart between sessions
   private storageKey = 'app_cart';
   private items: CartItem[] = [];
 
@@ -17,6 +18,7 @@ export class CartService {
     this.load();
   }
 
+  // Load persisted cart items (if any)
   private load() {
     try {
       const raw = localStorage.getItem(this.storageKey);
@@ -26,14 +28,17 @@ export class CartService {
     }
   }
 
+  // Persist current cart state to LocalStorage
   private persist() {
     localStorage.setItem(this.storageKey, JSON.stringify(this.items));
   }
 
+  // Return a snapshot of current cart items
   getItems(): CartItem[] {
     return this.items;
   }
 
+  // Add a product to the cart (increase qty if already present)
   add(product: Product, qty = 1) {
     const existing = this.items.find(i => i.productRef === product.reference);
     if (existing) {
@@ -44,16 +49,19 @@ export class CartService {
     this.persist();
   }
 
+  // Remove a single product by reference
   remove(productRef: string) {
     this.items = this.items.filter(i => i.productRef !== productRef);
     this.persist();
   }
 
+  // Empty the cart
   clear() {
     this.items = [];
     this.persist();
   }
 
+  // Compute total price
   total() {
     return this.items.reduce((s, i) => s + i.qty * i.unitPrice, 0);
   }
